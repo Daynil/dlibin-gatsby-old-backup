@@ -7,6 +7,7 @@
 declare var __PATH_PREFIX__: string;
 declare module '*.png';
 declare module '*.jpg';
+declare module '*.svg';
 
 declare module 'typography-theme-alton' {
   import { TypographyOptions } from 'typography';

@@ -1,8 +1,12 @@
+import { important } from 'csx';
 import { Link, PageRendererProps } from 'gatsby';
 import React, { ReactNode } from 'react';
+import { FaMoon, FaSun } from 'react-icons/fa';
 import { classes, media, style } from 'typestyle';
-import logo from '../dl-blk2.png';
-import { Colors, Media } from '../theme';
+import logoDark from '../assets/dl-dark.png';
+import logoLight from '../assets/dl-light.png';
+import { useLocalStorage } from '../utils/hooks';
+import { Media, Theme, Themes } from '../utils/theme';
 
 const navWrap = style({
   display: 'flex',
@@ -17,28 +21,57 @@ const navLink = style({
   color: 'inherit'
 });
 
-const navText = style({
-  margin: '0 15px',
-  borderBottom: '2px solid transparent',
-  transition: 'border-color 0.1s ease-in',
-  $nest: {
-    '&:hover': {
-      borderBottomColor: Colors.primary.toString()
+const navText = (theme: Theme) =>
+  style({
+    color: important(theme.font),
+    margin: '0 15px',
+    borderBottom: '2px solid transparent',
+    transition: 'border-color 0.1s ease-in',
+    $nest: {
+      '&:hover': {
+        borderBottomColor: theme.primary
+      }
     }
-  }
+  });
+
+const siteWrap = (theme: Theme) =>
+  style({
+    width: '100%',
+    minHeight: '100vh',
+    backgroundColor: theme.background
+  });
+
+const contentWrap = (theme: Theme) =>
+  style(
+    {
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      maxWidth: '100%',
+      $nest: {
+        '*': {
+          color: theme.font
+        },
+        a: {
+          color: theme.primary,
+          textDecoration: 'none',
+          transition: '0.1s ease-in',
+          $nest: {
+            '&:hover,&:active': {
+              color: theme.font
+            }
+          }
+        }
+      }
+    },
+    media(Media.lg, { maxWidth: '60%' }),
+    media(Media.xl, { maxWidth: '45%' })
+  );
+
+const themeSwitcher = style({
+  position: 'absolute',
+  right: '20px',
+  top: '20px'
 });
-
-const siteWrap = style(
-  {
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    maxWidth: '100%'
-  },
-  media(Media.lg, { maxWidth: '60%' }),
-  media(Media.xl, { maxWidth: '45%' })
-);
-
-const navTextLink = classes(navLink, navText);
 
 interface Props extends PageRendererProps {
   title: string;
@@ -46,10 +79,18 @@ interface Props extends PageRendererProps {
 }
 
 const Layout = ({ location, title, children }: Props) => {
+  const [theme, setTheme] = useLocalStorage('theme', 'light');
+
+  const navTextLink = classes(navLink, navText(Themes[theme]));
+
   let header = (
     <div className={navWrap}>
       <Link className={navLink} to={`/`}>
-        <img style={{ marginBottom: 0 }} src={logo} alt="logo" />
+        <img
+          style={{ marginBottom: 0 }}
+          src={theme === 'light' ? logoLight : logoDark}
+          alt="logo"
+        />
       </Link>
       <div style={{ flex: '1 1 auto' }}></div>
       <Link className={navTextLink} to={'/'}>
@@ -64,16 +105,24 @@ const Layout = ({ location, title, children }: Props) => {
       <Link className={navTextLink} to={'/'}>
         Contact
       </Link>
+      <span
+        className={themeSwitcher}
+        onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+      >
+        {theme === 'light' ? <FaMoon size="40px" /> : <FaSun size="40px" />}
+      </span>
     </div>
   );
 
   return (
-    <div className={siteWrap}>
-      <header>{header}</header>
-      <main style={{ marginTop: '48px' }}>{children}</main>
-      <footer>
-        © Danny Libin {new Date().getFullYear()}. All rights reserved.
-      </footer>
+    <div className={siteWrap(Themes[theme])}>
+      <div className={contentWrap(Themes[theme])}>
+        <header>{header}</header>
+        <main style={{ marginTop: '48px' }}>{children}</main>
+        <footer>
+          © Danny Libin {new Date().getFullYear()}. All rights reserved.
+        </footer>
+      </div>
     </div>
   );
 };
