@@ -1,10 +1,8 @@
 import { graphql, Link, PageRendererProps } from 'gatsby';
 import React from 'react';
-import Bio from '../components/bio';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 import { BlogPostBySlugQuery, SitePageContext } from '../graphql-types';
-import { rhythm, scale } from '../utils/typography';
 
 interface Props extends PageRendererProps {
   data: BlogPostBySlugQuery;
@@ -26,7 +24,7 @@ const BlogPostTemplate = ({ data, location, pageContext }: Props) => {
         <header>
           <h1
             style={{
-              marginTop: rhythm(1),
+              marginTop: '10px',
               marginBottom: 0
             }}
           >
@@ -34,23 +32,14 @@ const BlogPostTemplate = ({ data, location, pageContext }: Props) => {
           </h1>
           <p
             style={{
-              ...scale(-1 / 5),
               display: `block`,
-              marginBottom: rhythm(1)
+              marginBottom: '10px'
             }}
           >
             {post.frontmatter.date}
           </p>
         </header>
         <section dangerouslySetInnerHTML={{ __html: post.html }} />
-        <hr
-          style={{
-            marginBottom: rhythm(1)
-          }}
-        />
-        <footer>
-          <Bio />
-        </footer>
       </article>
 
       <nav>

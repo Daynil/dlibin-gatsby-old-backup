@@ -5,3 +5,11 @@
  * https://www.gatsbyjs.org/docs/path-prefix/
  */
 declare var __PATH_PREFIX__: string;
+declare module '*.png';
+declare module '*.jpg';
+
+declare module 'typography-theme-alton' {
+  import { TypographyOptions } from 'typography';
+  var theme: TypographyOptions;
+  export = theme;
+}

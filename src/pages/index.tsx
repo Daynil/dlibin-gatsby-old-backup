@@ -1,10 +1,8 @@
 import { graphql, Link, PageRendererProps } from 'gatsby';
 import React from 'react';
-import Bio from '../components/bio';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 import { BlogIndexQuery } from '../graphql-types';
-import { rhythm } from '../utils/typography';
 
 interface Props extends PageRendererProps {
   data: BlogIndexQuery;
@@ -17,21 +15,21 @@ const BlogIndex = ({ data, location }: Props) => {
   return (
     <Layout location={location} title={siteTitle}>
       <SEO title="All posts" />
-      <Bio />
+
       {posts.map(({ node }) => {
         const title = node.frontmatter.title || node.fields.slug;
         return (
           <article key={node.fields.slug}>
             <header>
-              <h3
+              <h1
                 style={{
-                  marginBottom: rhythm(1 / 4)
+                  marginBottom: '10px'
                 }}
               >
                 <Link style={{ boxShadow: `none` }} to={node.fields.slug}>
                   {title}
                 </Link>
-              </h3>
+              </h1>
               <small>{node.frontmatter.date}</small>
             </header>
             <section>

@@ -1,15 +1,7 @@
-/**
- * Bio component that queries for data
- * with Gatsby's useStaticQuery component
- *
- * See: https://www.gatsbyjs.org/docs/use-static-query/
- */
-
 import { graphql, useStaticQuery } from 'gatsby';
 import Image from 'gatsby-image';
 import React from 'react';
 import { BioQuery } from '../graphql-types';
-import { rhythm } from '../utils/typography';
 
 const Bio = () => {
   const data: BioQuery = useStaticQuery(graphql`
@@ -37,7 +29,7 @@ const Bio = () => {
     <div
       style={{
         display: `flex`,
-        marginBottom: rhythm(2.5)
+        marginBottom: '10px'
       }}
     >
       <Image
@@ -45,7 +37,7 @@ const Bio = () => {
         fixed={data.avatar.childImageSharp.fixed}
         alt={author}
         style={{
-          marginRight: rhythm(1 / 2),
+          marginRight: '10px',
           marginBottom: 0,
           minWidth: 50,
           borderRadius: `100%`
@@ -55,12 +47,7 @@ const Bio = () => {
         }}
       />
       <p>
-        Written by <strong>{author}</strong> who lives and works in San
-        Francisco building useful things.
-        {` `}
-        <a href={`https://twitter.com/${social.twitter}`}>
-          You should follow him on Twitter
-        </a>
+        Adventures in code. <br /> Written by <strong>{author}</strong>.
       </p>
     </div>
   );

@@ -1,23 +1,28 @@
 import Typography from 'typography';
-import Wordpress2016 from 'typography-theme-wordpress-2016';
+import altonTheme from 'typography-theme-alton';
+import { Colors } from '../theme';
 
-Wordpress2016.overrideThemeStyles = () => {
-  return {
-    'a.gatsby-resp-image-link': {
-      boxShadow: `none`
-    }
-  };
-};
+altonTheme.headerFontFamily = ['Ubuntu', 'sans-serif'];
+altonTheme.bodyColor = Colors.black.toString();
+altonTheme.overrideStyles = ({ rhythm }, options, styles) => ({
+  a: {
+    color: Colors.primary.toString(),
+    textDecoration: 'none',
+    transition: '0.1s ease-in'
+  },
+  'a:hover,a:active': {
+    color: options.bodyColor
+  }
+});
 
-delete Wordpress2016.googleFonts;
+delete altonTheme.googleFonts;
 
-const typography = new Typography(Wordpress2016);
+const typography = new Typography(altonTheme);
 
 // Hot reload typography in development.
 if (process.env.NODE_ENV !== `production`) {
   typography.injectStyles();
 }
 
+export const { scale, rhythm } = typography;
 export default typography;
-export const rhythm = typography.rhythm;
-export const scale = typography.scale;
