@@ -1,19 +1,32 @@
 import { important } from 'csx';
 import { Link, PageRendererProps } from 'gatsby';
-import React, { ReactNode } from 'react';
-import { FaMoon, FaSun } from 'react-icons/fa';
+import React, { ReactNode, useState } from 'react';
+import { FaBars, FaMoon, FaSun } from 'react-icons/fa';
 import { classes, media, style } from 'typestyle';
 import logoDark from '../assets/dl-dark.png';
 import logoLight from '../assets/dl-light.png';
-import { useLocalStorage } from '../utils/hooks';
+import { useLocalStorage, useWindowSize } from '../utils/hooks';
 import { Media, Theme, Themes } from '../utils/theme';
 
-const navWrap = style({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  height: '94px'
-});
+const navWrap = style(
+  {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  media(Media.md, {
+    flexDirection: 'row'
+  })
+);
+
+const linksWrap = style(
+  {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  media(Media.md, { flexDirection: 'row' })
+);
 
 const navLink = style({
   boxShadow: 'none',
@@ -22,17 +35,20 @@ const navLink = style({
 });
 
 const navText = (theme: Theme) =>
-  style({
-    color: important(theme.font),
-    margin: '0 15px',
-    borderBottom: '2px solid transparent',
-    transition: 'border-color 0.1s ease-in',
-    $nest: {
-      '&:hover': {
-        borderBottomColor: theme.primary
+  style(
+    {
+      color: important(theme.font),
+      margin: '2px 15px',
+      borderBottom: '2px solid transparent',
+      transition: 'border-color 0.1s ease-in',
+      $nest: {
+        '&:hover': {
+          borderBottomColor: theme.primary
+        }
       }
-    }
-  });
+    },
+    media(Media.md, { margin: '0 15px' })
+  );
 
 const siteWrap = (theme: Theme) =>
   style({
@@ -46,7 +62,7 @@ const contentWrap = (theme: Theme) =>
     {
       marginLeft: 'auto',
       marginRight: 'auto',
-      maxWidth: '100%',
+      maxWidth: '90%',
       $nest: {
         '*': {
           color: theme.font
@@ -67,11 +83,24 @@ const contentWrap = (theme: Theme) =>
     media(Media.xl, { maxWidth: '45%' })
   );
 
-const themeSwitcher = style({
-  position: 'absolute',
-  right: '20px',
-  top: '20px'
-});
+const themeSwitcher = style(
+  {
+    cursor: 'pointer',
+    marginTop: '10px'
+  },
+  media(Media.md, { marginLeft: '10px', marginTop: '0' })
+);
+
+const menuToggle = style(
+  {
+    display: 'block',
+    position: 'absolute',
+    right: '20px',
+    top: '20px',
+    cursor: 'pointer'
+  },
+  media(Media.md, { display: 'none' })
+);
 
 interface Props extends PageRendererProps {
   title: string;
@@ -80,6 +109,9 @@ interface Props extends PageRendererProps {
 
 const Layout = ({ location, title, children }: Props) => {
   const [theme, setTheme] = useLocalStorage('theme', 'light');
+  const [showMenu, setShowMenu] = useState(false);
+
+  const windowSize = useWindowSize();
 
   const navTextLink = classes(navLink, navText(Themes[theme]));
 
@@ -93,23 +125,31 @@ const Layout = ({ location, title, children }: Props) => {
         />
       </Link>
       <div style={{ flex: '1 1 auto' }}></div>
-      <Link className={navTextLink} to={'/'}>
-        Blog
-      </Link>
-      <Link className={navTextLink} to={'/'}>
-        Projects
-      </Link>
-      <Link className={navTextLink} to={'/'}>
-        About
-      </Link>
-      <Link className={navTextLink} to={'/'}>
-        Contact
-      </Link>
-      <span
-        className={themeSwitcher}
-        onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-      >
-        {theme === 'light' ? <FaMoon size="40px" /> : <FaSun size="40px" />}
+      {/* Guarantee that menu shows regardless of showstate in larger sizes */}
+      {!showMenu && windowSize.width < 768 ? null : (
+        <div className={linksWrap}>
+          <Link className={navTextLink} to={'/'}>
+            Blog
+          </Link>
+          <Link className={navTextLink} to={'/'}>
+            Projects
+          </Link>
+          <Link className={navTextLink} to={'/'}>
+            About
+          </Link>
+          <Link className={navTextLink} to={'/'}>
+            Contact
+          </Link>
+          <span
+            className={themeSwitcher}
+            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+          >
+            {theme === 'light' ? <FaMoon size="40px" /> : <FaSun size="40px" />}
+          </span>
+        </div>
+      )}
+      <span className={menuToggle} onClick={() => setShowMenu(!showMenu)}>
+        <FaBars size="30px" />
       </span>
     </div>
   );
@@ -117,9 +157,9 @@ const Layout = ({ location, title, children }: Props) => {
   return (
     <div className={siteWrap(Themes[theme])}>
       <div className={contentWrap(Themes[theme])}>
-        <header>{header}</header>
-        <main style={{ marginTop: '48px' }}>{children}</main>
-        <footer>
+        <header style={{ padding: '20px 0' }}>{header}</header>
+        <main style={{ margin: '40px 0' }}>{children}</main>
+        <footer style={{ padding: '20px 0' }}>
           © Danny Libin {new Date().getFullYear()}. All rights reserved.
         </footer>
       </div>
