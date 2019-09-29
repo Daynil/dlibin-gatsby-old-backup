@@ -54,7 +54,8 @@ const siteWrap = (theme: Theme) =>
   style({
     width: '100%',
     minHeight: '100vh',
-    backgroundColor: theme.background
+    backgroundColor: theme.background,
+    transition: 'background-color 0.1s ease-in'
   });
 
 const contentWrap = (theme: Theme) =>
