@@ -1,7 +1,7 @@
 import Typography from 'typography';
 import altonTheme from 'typography-theme-alton';
 
-const BaseColors = {
+export const BaseColors = {
   grey: {
     100: '#F6F7F9',
     200: '#E7EBEF',
@@ -30,12 +30,14 @@ export const Themes = {
   light: {
     primary: BaseColors.teal[500],
     background: '#fff',
-    font: BaseColors.grey[900]
+    font: BaseColors.grey[900],
+    fontSecondary: BaseColors.grey[700]
   },
   dark: {
     primary: BaseColors.teal[500],
     background: BaseColors.grey[900],
-    font: BaseColors.grey[100]
+    font: BaseColors.grey[100],
+    fontSecondary: BaseColors.grey[400]
   }
 };
 
@@ -53,7 +55,7 @@ const startingTheme: Theme = Themes['light'];
 
 altonTheme.headerFontFamily = ['Ubuntu', 'sans-serif'];
 delete altonTheme.bodyColor;
-altonTheme.overrideStyles = ({ rhythm }, options, styles) => {
+altonTheme.overrideThemeStyles = ({ rhythm }, options) => {
   return {
     a: {
       color: startingTheme.primary,
@@ -62,6 +64,19 @@ altonTheme.overrideStyles = ({ rhythm }, options, styles) => {
     },
     'a:hover,a:active': {
       color: startingTheme.font
+    },
+    blockquote: {
+      borderLeftColor: startingTheme.primary,
+      borderRadius: '4px'
+    },
+    h2: {
+      margin: '50px 0 20px 0'
+    },
+    h3: {
+      margin: '40px 0 20px 0'
+    },
+    h4: {
+      margin: '30px 0 20px 0'
     }
   };
 };

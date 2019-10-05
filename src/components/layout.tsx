@@ -103,6 +103,13 @@ const menuToggle = style(
   media(Media.md, { display: 'none' })
 );
 
+const footer = (theme: Theme) =>
+  style({
+    padding: '20px 0',
+    color: important(theme.fontSecondary),
+    fontSize: '15px'
+  });
+
 interface Props extends PageRendererProps {
   title: string;
   children: ReactNode;
@@ -160,7 +167,7 @@ const Layout = ({ location, title, children }: Props) => {
       <div className={contentWrap(Themes[theme])}>
         <header style={{ padding: '20px 0' }}>{header}</header>
         <main style={{ margin: '40px 0' }}>{children}</main>
-        <footer style={{ padding: '20px 0' }}>
+        <footer className={footer(Themes[theme])}>
           © Danny Libin {new Date().getFullYear()}. All rights reserved.
         </footer>
       </div>

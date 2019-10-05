@@ -1,8 +1,11 @@
 import { graphql, Link, PageRendererProps } from 'gatsby';
 import React from 'react';
+import { style } from 'typestyle';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 import { BlogPostBySlugQuery, SitePageContext } from '../graphql-types';
+
+const date = style({ position: 'relative', top: '-10px', fontSize: '16px' });
 
 interface Props extends PageRendererProps {
   data: BlogPostBySlugQuery;
@@ -20,24 +23,14 @@ const BlogPostTemplate = ({ data, location, pageContext }: Props) => {
         title={post.frontmatter.title}
         description={post.frontmatter.description || post.excerpt}
       />
-      <article>
-        <header>
-          <h1
-            style={{
-              marginTop: '10px',
-              marginBottom: 0
-            }}
-          >
-            {post.frontmatter.title}
-          </h1>
-          <p
-            style={{
-              display: `block`,
-              marginBottom: '10px'
-            }}
-          >
-            {post.frontmatter.date}
-          </p>
+      <article style={{ marginBottom: '50px' }}>
+        <header
+          style={{
+            marginBottom: '20px'
+          }}
+        >
+          <h1>{post.frontmatter.title}</h1>
+          <p className={date}>{post.frontmatter.date}</p>
         </header>
         <section dangerouslySetInnerHTML={{ __html: post.html }} />
       </article>
@@ -45,11 +38,12 @@ const BlogPostTemplate = ({ data, location, pageContext }: Props) => {
       <nav>
         <ul
           style={{
-            display: `flex`,
-            flexWrap: `wrap`,
-            justifyContent: `space-between`,
-            listStyle: `none`,
-            padding: 0
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            listStyle: 'none',
+            padding: 0,
+            marginLeft: 0
           }}
         >
           <li>

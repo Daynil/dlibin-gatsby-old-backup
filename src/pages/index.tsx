@@ -19,11 +19,11 @@ const BlogIndex = ({ data, location }: Props) => {
       {posts.map(({ node }) => {
         const title = node.frontmatter.title || node.fields.slug;
         return (
-          <article key={node.fields.slug}>
-            <header>
+          <article style={{ marginBottom: '40px' }} key={node.fields.slug}>
+            <header style={{ marginBottom: '10px' }}>
               <h1
                 style={{
-                  marginBottom: '10px'
+                  marginBottom: '5px'
                 }}
               >
                 <Link style={{ boxShadow: `none` }} to={node.fields.slug}>
