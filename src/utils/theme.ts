@@ -1,3 +1,4 @@
+import React from 'react';
 import Typography from 'typography';
 import altonTheme from 'typography-theme-alton';
 
@@ -28,12 +29,14 @@ export const BaseColors = {
 
 export const Themes = {
   light: {
+    type: 'light' as ThemeType,
     primary: BaseColors.teal[500],
     background: '#fff',
     font: BaseColors.grey[900],
     fontSecondary: BaseColors.grey[700]
   },
   dark: {
+    type: 'dark' as ThemeType,
     primary: BaseColors.teal[500],
     background: BaseColors.grey[900],
     font: BaseColors.grey[100],
@@ -52,6 +55,8 @@ export const Media = {
 };
 
 const startingTheme: Theme = Themes['light'];
+
+export const ThemeContext = React.createContext(startingTheme);
 
 altonTheme.headerFontFamily = ['Ubuntu', 'sans-serif'];
 delete altonTheme.bodyColor;

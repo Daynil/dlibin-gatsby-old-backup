@@ -8,7 +8,7 @@ const Bio = () => {
     query Bio {
       avatar: file(absolutePath: { regex: "/profile-pic.jpg/" }) {
         childImageSharp {
-          fixed(width: 50, height: 50) {
+          fixed(width: 56, height: 56) {
             ...GatsbyImageSharpFixed
           }
         }
@@ -17,7 +17,7 @@ const Bio = () => {
         siteMetadata {
           author
           social {
-            twitter
+            github
           }
         }
       }
@@ -28,7 +28,7 @@ const Bio = () => {
   return (
     <div
       style={{
-        display: `flex`,
+        display: 'flex',
         marginBottom: '10px'
       }}
     >
@@ -39,15 +39,15 @@ const Bio = () => {
         style={{
           marginRight: '10px',
           marginBottom: 0,
-          minWidth: 50,
-          borderRadius: `100%`
-        }}
-        imgStyle={{
-          borderRadius: `50%`
+          borderRadius: '50%'
         }}
       />
       <p>
-        Adventures in code. <br /> Written by <strong>{author}</strong>.
+        Adventures in code. <br /> By{' '}
+        <a target="_blank" href={`https://github.com/${social.github}`}>
+          {author}
+        </a>
+        .
       </p>
     </div>
   );

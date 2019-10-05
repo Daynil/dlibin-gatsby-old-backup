@@ -5,7 +5,8 @@ module.exports = {
     description: `Adventures in code.`,
     siteUrl: `https://gatsby-starter-blog-demo.netlify.com/`,
     social: {
-      twitter: `dayn1l`
+      twitter: `dayn1l`,
+      github: 'daynil'
     }
   },
   plugins: [
@@ -57,13 +58,13 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Gatsby Starter Blog`,
-        short_name: `GatsbyJS`,
+        name: `Danny Libin`,
+        short_name: `Danny Libin`,
         start_url: `/`,
         background_color: `#ffffff`,
-        theme_color: `#663399`,
+        theme_color: `#38B2AC`,
         display: `minimal-ui`,
-        icon: `content/assets/gatsby-icon.png`
+        icon: `content/assets/dl-light.png`
       }
     },
     `gatsby-plugin-offline`,

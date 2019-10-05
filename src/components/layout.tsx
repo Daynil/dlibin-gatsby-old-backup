@@ -6,7 +6,7 @@ import { classes, media, style } from 'typestyle';
 import logoDark from '../assets/dl-dark.png';
 import logoLight from '../assets/dl-light.png';
 import { useLocalStorage, useWindowSize } from '../utils/hooks';
-import { Media, Theme, Themes } from '../utils/theme';
+import { Media, Theme, ThemeContext, Themes } from '../utils/theme';
 
 const navWrap = style(
   {
@@ -116,19 +116,21 @@ interface Props extends PageRendererProps {
 }
 
 const Layout = ({ location, title, children }: Props) => {
-  const [theme, setTheme] = useLocalStorage('theme', 'light');
+  const [currentTheme, setTheme] = useLocalStorage('theme', 'light');
+  const theme: Theme = Themes[currentTheme];
+
   const [showMenu, setShowMenu] = useState(false);
 
   const windowSize = useWindowSize();
 
-  const navTextLink = classes(navLink, navText(Themes[theme]));
+  const navTextLink = classes(navLink, navText(theme));
 
   let header = (
     <div className={navWrap}>
       <Link className={navLink} to={`/`}>
         <img
           style={{ marginBottom: 0 }}
-          src={theme === 'light' ? logoLight : logoDark}
+          src={theme.type === 'light' ? logoLight : logoDark}
           alt="logo"
         />
       </Link>
@@ -142,17 +144,18 @@ const Layout = ({ location, title, children }: Props) => {
           <Link className={navTextLink} to={'/'}>
             Projects
           </Link>
-          <Link className={navTextLink} to={'/'}>
+          <Link className={navTextLink} to={'/about'}>
             About
-          </Link>
-          <Link className={navTextLink} to={'/'}>
-            Contact
           </Link>
           <span
             className={themeSwitcher}
-            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+            onClick={() => setTheme(theme.type === 'light' ? 'dark' : 'light')}
           >
-            {theme === 'light' ? <FaMoon size="40px" /> : <FaSun size="40px" />}
+            {theme.type === 'light' ? (
+              <FaMoon size="40px" />
+            ) : (
+              <FaSun size="40px" />
+            )}
           </span>
         </div>
       )}
@@ -163,15 +166,17 @@ const Layout = ({ location, title, children }: Props) => {
   );
 
   return (
-    <div className={siteWrap(Themes[theme])}>
-      <div className={contentWrap(Themes[theme])}>
-        <header style={{ padding: '20px 0' }}>{header}</header>
-        <main style={{ margin: '40px 0' }}>{children}</main>
-        <footer className={footer(Themes[theme])}>
-          © Danny Libin {new Date().getFullYear()}. All rights reserved.
-        </footer>
+    <ThemeContext.Provider value={theme}>
+      <div className={siteWrap(theme)}>
+        <div className={contentWrap(theme)}>
+          <header style={{ padding: '20px 0' }}>{header}</header>
+          <main style={{ margin: '40px 0' }}>{children}</main>
+          <footer className={footer(theme)}>
+            © Danny Libin {new Date().getFullYear()}. All rights reserved.
+          </footer>
+        </div>
       </div>
-    </div>
+    </ThemeContext.Provider>
   );
 };
 

@@ -1,6 +1,7 @@
 import { graphql, Link, PageRendererProps } from 'gatsby';
 import React from 'react';
 import { style } from 'typestyle';
+import Bio from '../components/bio';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 import { BlogPostBySlugQuery, SitePageContext } from '../graphql-types';
@@ -34,6 +35,10 @@ const BlogPostTemplate = ({ data, location, pageContext }: Props) => {
         </header>
         <section dangerouslySetInnerHTML={{ __html: post.html }} />
       </article>
+
+      <div style={{ marginBottom: '40px' }}>
+        <Bio />
+      </div>
 
       <nav>
         <ul

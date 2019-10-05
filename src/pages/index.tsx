@@ -1,5 +1,6 @@
 import { graphql, Link, PageRendererProps } from 'gatsby';
 import React from 'react';
+import Bio from '../components/bio';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 import { BlogIndexQuery } from '../graphql-types';
@@ -14,6 +15,9 @@ const BlogIndex = ({ data, location }: Props) => {
 
   return (
     <Layout location={location} title={siteTitle}>
+      <div style={{ marginBottom: '40px' }}>
+        <Bio />
+      </div>
       <SEO title="All posts" />
 
       {posts.map(({ node }) => {
